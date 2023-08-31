@@ -1,0 +1,22 @@
+name: ShiftToFix
+version: 2.0
+main: rx5600xt.sxqe.shifttofix.ShiftToFix
+api-version: 1.20
+description: A plugin to enhance shift-click behavior
+author: RX_5600XT
+
+commands:
+  stfset:
+    description: 设置耐久值增加量
+    usage: /stfset <amount>
+    permission: shifttofix.setdurability
+
+  stf:
+    description: 帮助命令
+    usage: /stf
+    permission: stf.help
+
+  stfreload:
+    description: 重新加载插件配置
+    usage: /stfreload
+    permission: shifttofix.reload

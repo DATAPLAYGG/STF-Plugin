@@ -1,0 +1,5 @@
+# 耐久值增加量
+durabilityIncrease: 10
+
+# Help提示内容
+helpMessage: "[STF]玩家在潜行状态时且副手拿着铁锭时右键可以修复身上耐久有损失的装备/When the player is in stealth and when the deputy is holding the iron ingot, the right button can repair the equipment on the body that has lost durability"

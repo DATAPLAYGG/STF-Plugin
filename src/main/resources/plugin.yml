@@ -7,16 +7,26 @@ author: RX_5600XT
 
 commands:
   stfset:
-    description: 设置耐久值增加量
+    description: Set the amount of durability increase
     usage: /stfset <amount>
     permission: shifttofix.setdurability
 
   stf:
-    description: 帮助命令
+    description: Help command
     usage: /stf
     permission: stf.help
 
   stfreload:
-    description: 重新加载插件配置
+    description: Reload the plugin configuration
     usage: /stfreload
     permission: shifttofix.reload
+
+  stfon:
+    description: Enable ShiftToFix plugin functionality
+    usage: /stfon
+    permission: shifttofix.toggle
+
+  stfoff:
+    description: Disable ShiftToFix plugin functionality
+    usage: /stfoff
+    permission: shifttofix.toggle

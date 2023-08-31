@@ -6,7 +6,7 @@
 
     <groupId>rx5600xt.sxqe</groupId>
     <artifactId>STF</artifactId>
-    <version>2.0</version>
+    <version>3.0</version>
     <packaging>jar</packaging>
 
     <name>ShiftToFix</name>

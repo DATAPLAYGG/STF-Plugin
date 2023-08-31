@@ -12,10 +12,27 @@ import org.bukkit.inventory.meta.ItemMeta;
 
 public class PlayerInteractListener implements Listener {
 
+    private final ShiftToFix plugin;
     private int durabilityIncrease = 10;
+
+    public PlayerInteractListener(ShiftToFix plugin) {
+        this.plugin = plugin;
+    }
+
+    public void setDurabilityIncrease(int value) {
+        durabilityIncrease = value;
+    }
+
+    public int getDurabilityIncrease() {
+        return durabilityIncrease;
+    }
 
     @EventHandler
     public void onPlayerInteract(PlayerInteractEvent event) {
+        if (!plugin.isPluginEnabled()) {
+            return;
+        }
+
         Player player = event.getPlayer();
 
         if (!player.isSneaking() || !event.getAction().toString().contains("RIGHT_CLICK")) {
@@ -44,11 +61,5 @@ public class PlayerInteractListener implements Listener {
                 }
             }
         }
-    }
-    public void setDurabilityIncrease(int value) {
-        durabilityIncrease = value;
-    }
-    public int getDurabilityIncrease() {
-        return durabilityIncrease;
     }
 }

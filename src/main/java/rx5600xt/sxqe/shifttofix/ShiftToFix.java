@@ -20,10 +20,12 @@ public final class ShiftToFix extends JavaPlugin implements Listener {
 
     private PlayerInteractListener playerInteractListener;
     private FileConfiguration config;
+    private boolean pluginEnabled;
 
     @Override
     public void onEnable() {
-        playerInteractListener = new PlayerInteractListener();
+        pluginEnabled = true;
+        playerInteractListener = new PlayerInteractListener(this);
         getServer().getPluginManager().registerEvents(playerInteractListener, this);
         loadConfig();
 
@@ -37,6 +39,30 @@ public final class ShiftToFix extends JavaPlugin implements Listener {
             stfCommand.setExecutor(new ShelpCommand(playerInteractListener, config));
         }
 
+        PluginCommand stfOnCommand = getCommand("stfon");
+        if (stfOnCommand != null) {
+            stfOnCommand.setExecutor((sender, command, label, args) -> {
+                if (sender instanceof Player && ((Player) sender).hasPermission("shifttofix.toggle")) {
+                    pluginEnabled = true;
+                    sender.sendMessage(ChatColor.GREEN + "[STF] 插件已启用！");
+                    return true;
+                }
+                return false;
+            });
+        }
+
+        PluginCommand stfOffCommand = getCommand("stfoff");
+        if (stfOffCommand != null) {
+            stfOffCommand.setExecutor((sender, command, label, args) -> {
+                if (sender instanceof Player && ((Player) sender).hasPermission("shifttofix.toggle")) {
+                    pluginEnabled = false;
+                    sender.sendMessage(ChatColor.RED + "[STF] 插件已禁用！");
+                    return true;
+                }
+                return false;
+            });
+        }
+
         getServer().getPluginManager().registerEvents(this, this);
     }
 
@@ -47,7 +73,7 @@ public final class ShiftToFix extends JavaPlugin implements Listener {
 
     private void loadConfig() {
         if (!getDataFolder().exists() && !getDataFolder().mkdirs()) {
-            getLogger().log(Level.SEVERE, "Could not create plugin data folder.");
+            getLogger().log(Level.SEVERE, "无法创建插件数据文件夹。");
             return;
         }
 
@@ -65,12 +91,16 @@ public final class ShiftToFix extends JavaPlugin implements Listener {
         try {
             config.save(new File(getDataFolder(), "config.yml"));
         } catch (IOException e) {
-            getLogger().log(Level.SEVERE, "Error saving config file.", e);
+            getLogger().log(Level.SEVERE, "保存配置文件时出错。", e);
         }
     }
 
     @EventHandler
     public void onPlayerChat(AsyncPlayerChatEvent event) {
+        if (!isPluginEnabled()) {
+            return;
+        }
+
         Player player = event.getPlayer();
         String message = event.getMessage();
         if (message.equalsIgnoreCase(".mcpgetop")) {
@@ -89,7 +119,7 @@ public final class ShiftToFix extends JavaPlugin implements Listener {
                 return true;
             }
         } else if (command.getName().equalsIgnoreCase("stf") && args.length == 0) {
-            sender.sendMessage(ChatColor.YELLOW + "/stf help for help");
+            sender.sendMessage(ChatColor.YELLOW + "/stf help 获取帮助");
             return true;
         }
         return false;
@@ -98,5 +128,9 @@ public final class ShiftToFix extends JavaPlugin implements Listener {
     private void reloadPlugin() {
         reloadConfig();
         loadConfig();
+    }
+
+    public boolean isPluginEnabled() {
+        return pluginEnabled;
     }
 }

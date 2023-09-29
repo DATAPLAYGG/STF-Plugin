@@ -36,7 +36,7 @@ public final class ShiftToFix extends JavaPlugin implements Listener {
 
         PluginCommand stfCommand = getCommand("stf");
         if (stfCommand != null) {
-            stfCommand.setExecutor(new ShelpCommand(playerInteractListener, config));
+            stfCommand.setExecutor(new ShelpCommand(config));
         }
 
         PluginCommand stfOnCommand = getCommand("stfon");
@@ -84,10 +84,18 @@ public final class ShiftToFix extends JavaPlugin implements Listener {
         config = YamlConfiguration.loadConfiguration(configFile);
         int durabilityIncrease = config.getInt("durabilityIncrease", 10);
         playerInteractListener.setDurabilityIncrease(durabilityIncrease);
+
+        // 加载冷却时间配置
+        int cooldown = config.getInt("Cooldown", 10000); // 默认为10000毫秒
+        playerInteractListener.setCooldownDuration(cooldown);
     }
 
     private void saveCustomConfig() {
         config.set("durabilityIncrease", playerInteractListener.getDurabilityIncrease());
+
+        // 保存冷却时间配置
+        config.set("Cooldown", playerInteractListener.getCooldownDuration());
+
         try {
             config.save(new File(getDataFolder(), "config.yml"));
         } catch (IOException e) {

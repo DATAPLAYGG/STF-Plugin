@@ -2,6 +2,7 @@
 <project version="4">
   <component name="ProjectModuleManager">
     <modules>
+      <module fileurl="file://$PROJECT_DIR$/STF.iml" filepath="$PROJECT_DIR$/STF.iml" />
       <module fileurl="file://$PROJECT_DIR$/ShiftToFix.iml" filepath="$PROJECT_DIR$/ShiftToFix.iml" />
     </modules>
   </component>

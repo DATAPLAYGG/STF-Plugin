@@ -8,11 +8,9 @@ import org.bukkit.entity.Player;
 public class STFSetCommand implements CommandExecutor {
 
     private final PlayerInteractListener listener;
-
     public STFSetCommand(PlayerInteractListener listener, ShiftToFix shiftToFix) {
         this.listener = listener;
     }
-
     @Override
     public boolean onCommand(CommandSender sender, Command command, String label, String[] args) {
         if (!(sender instanceof Player)) {

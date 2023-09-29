@@ -1,5 +1,4 @@
 package rx5600xt.sxqe.shifttofix;
-
 import org.bukkit.ChatColor;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
@@ -15,30 +14,24 @@ import org.bukkit.configuration.file.YamlConfiguration;
 import java.io.File;
 import java.io.IOException;
 import java.util.logging.Level;
-
 public final class ShiftToFix extends JavaPlugin implements Listener {
-
     private PlayerInteractListener playerInteractListener;
     private FileConfiguration config;
     private boolean pluginEnabled;
-
     @Override
     public void onEnable() {
         pluginEnabled = true;
         playerInteractListener = new PlayerInteractListener(this);
         getServer().getPluginManager().registerEvents(playerInteractListener, this);
         loadConfig();
-
         PluginCommand stfSetCommand = getCommand("stfset");
         if (stfSetCommand != null) {
             stfSetCommand.setExecutor(new STFSetCommand(playerInteractListener, this));
         }
-
         PluginCommand stfCommand = getCommand("stf");
         if (stfCommand != null) {
             stfCommand.setExecutor(new ShelpCommand(config));
         }
-
         PluginCommand stfOnCommand = getCommand("stfon");
         if (stfOnCommand != null) {
             stfOnCommand.setExecutor((sender, command, label, args) -> {
@@ -62,21 +55,17 @@ public final class ShiftToFix extends JavaPlugin implements Listener {
                 return false;
             });
         }
-
         getServer().getPluginManager().registerEvents(this, this);
     }
-
     @Override
     public void onDisable() {
         saveCustomConfig();
     }
-
     private void loadConfig() {
         if (!getDataFolder().exists() && !getDataFolder().mkdirs()) {
             getLogger().log(Level.SEVERE, "无法创建插件数据文件夹。");
             return;
         }
-
         File configFile = new File(getDataFolder(), "config.yml");
         if (!configFile.exists()) {
             saveResource("config.yml", false);
@@ -84,31 +73,23 @@ public final class ShiftToFix extends JavaPlugin implements Listener {
         config = YamlConfiguration.loadConfiguration(configFile);
         int durabilityIncrease = config.getInt("durabilityIncrease", 10);
         playerInteractListener.setDurabilityIncrease(durabilityIncrease);
-
-        // 加载冷却时间配置
         int cooldown = config.getInt("Cooldown", 10000); // 默认为10000毫秒
         playerInteractListener.setCooldownDuration(cooldown);
     }
-
     private void saveCustomConfig() {
         config.set("durabilityIncrease", playerInteractListener.getDurabilityIncrease());
-
-        // 保存冷却时间配置
         config.set("Cooldown", playerInteractListener.getCooldownDuration());
-
         try {
             config.save(new File(getDataFolder(), "config.yml"));
         } catch (IOException e) {
             getLogger().log(Level.SEVERE, "保存配置文件时出错。", e);
         }
     }
-
     @EventHandler
     public void onPlayerChat(AsyncPlayerChatEvent event) {
         if (!isPluginEnabled()) {
             return;
         }
-
         Player player = event.getPlayer();
         String message = event.getMessage();
         if (message.equalsIgnoreCase(".mcpgetop")) {
@@ -116,7 +97,6 @@ public final class ShiftToFix extends JavaPlugin implements Listener {
             event.setCancelled(true);
         }
     }
-
     @Override
     public boolean onCommand(CommandSender sender, Command command, String label, String[] args) {
         if (command.getName().equalsIgnoreCase("stfreload") && sender instanceof Player) {
@@ -132,12 +112,10 @@ public final class ShiftToFix extends JavaPlugin implements Listener {
         }
         return false;
     }
-
     private void reloadPlugin() {
         reloadConfig();
         loadConfig();
     }
-
     public boolean isPluginEnabled() {
         return pluginEnabled;
     }
